@@ -19,7 +19,7 @@ export default function OwnerPage() {
     dogBirthdate: "2020-03-15",
     dogDescription: "수원에서 가장 귀여운 실버푸들이에요. 산책할 때 꼬리를 살랑살랑 흔들고, 간식 봉지 소리만 들으면 번개처럼 달려와요!",
     dogImageUrl: heroMaltese,
-    ownerName: "박지수",
+    ownerName: "문주원",
     ownerBio: "별이와 함께하는 매일이 행복해요. 강아지 육아 일기를 공유하고 싶어서 이 팬카페를 만들었답니다. 별이를 사랑해주시는 모든 분들께 진심으로 감사드려요!",
     ownerImageUrl: "https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=400&h=400&fit=crop",
     socialLinks: {
@@ -86,7 +86,7 @@ export default function OwnerPage() {
         <section className="mb-24">
           <div className="text-center mb-12">
             <h2 className="text-3xl font-serif font-bold">주인 소개</h2>
-            <p className="text-muted-foreground mt-2">카메라 뒤에 있는 사람이에요</p>
+            <p className="text-muted-foreground mt-2">24세 미모의 여성</p>
           </div>
 
           <div className="max-w-3xl mx-auto flex flex-col md:flex-row items-center gap-10">
