@@ -1,0 +1,14 @@
+uploads = []
+outputs = []
+
+[[generated]]
+id = "imllyMPBtkpG6OS3G2_iD"
+uri = "file://artifacts/puppy-fan-cafe/src/assets/hero-maltese.png"
+type = "image"
+title = "fluffy white Maltese dog in cafe"
+
+[[generated]]
+id = "O7nJY2RkZwAkQF00LM9HU"
+uri = "file://artifacts/puppy-fan-cafe/src/assets/cafe-bg.png"
+type = "image"
+title = "cozy cafe atmosphere background"
