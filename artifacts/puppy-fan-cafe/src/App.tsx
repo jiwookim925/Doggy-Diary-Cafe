@@ -27,8 +27,8 @@ function SignInPage() {
     <div className="min-h-screen bg-[url('/src/assets/cafe-bg.png')] bg-cover bg-center flex items-center justify-center p-4">
       <div className="w-full max-w-md glass-card rounded-3xl p-8 shadow-2xl animate-in fade-in slide-in-from-bottom-8 duration-700">
         <div className="flex flex-col items-center mb-8">
-          <h1 className="text-3xl font-bold text-foreground font-serif">Welcome Back</h1>
-          <p className="text-muted-foreground text-center mt-2">Sign in to join the Coco community</p>
+          <h1 className="text-3xl font-bold text-foreground font-serif">다시 만나서 반가워요</h1>
+          <p className="text-muted-foreground text-center mt-2">별이 팬카페에 로그인하세요</p>
         </div>
         <SignIn routing="path" path={`${basePath}/sign-in`} signUpUrl={`${basePath}/sign-up`} />
       </div>
@@ -41,8 +41,8 @@ function SignUpPage() {
     <div className="min-h-screen bg-[url('/src/assets/cafe-bg.png')] bg-cover bg-center flex items-center justify-center p-4">
       <div className="w-full max-w-md glass-card rounded-3xl p-8 shadow-2xl animate-in fade-in slide-in-from-bottom-8 duration-700">
          <div className="flex flex-col items-center mb-8">
-          <h1 className="text-3xl font-bold text-foreground font-serif">Join Coco Fan Café</h1>
-          <p className="text-muted-foreground text-center mt-2">Create an account to share your love</p>
+          <h1 className="text-3xl font-bold text-foreground font-serif">별이 팬카페 가입하기</h1>
+          <p className="text-muted-foreground text-center mt-2">계정을 만들고 사랑을 나눠요</p>
         </div>
         <SignUp routing="path" path={`${basePath}/sign-up`} signInUrl={`${basePath}/sign-in`} />
       </div>

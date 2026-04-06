@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Instagram, Youtube, BookOpen, MapPin, Bone } from "lucide-react";
 import heroMaltese from "@/assets/hero-maltese.png";
 import { formatDistanceToNowStrict, parseISO } from "date-fns";
+import { ko } from "date-fns/locale";
 
 export default function OwnerPage() {
   const { data: profile, isLoading } = useGetProfile();
@@ -12,35 +13,34 @@ export default function OwnerPage() {
     return <Layout><div className="flex-1 flex justify-center items-center"><div className="w-12 h-12 border-4 border-primary border-t-transparent rounded-full animate-spin"></div></div></Layout>;
   }
 
-  // Fallback data if API doesn't return anything or is empty
   const defaultProfile = {
-    dogName: "Coco",
-    dogBreed: "Maltese",
-    dogBirthdate: "2020-04-15",
-    dogDescription: "The sweetest little cloud you will ever meet. Loves naps in the sun, boiled chicken, and belly rubs. Dislikes loud noises and rain.",
+    dogName: "별이",
+    dogBreed: "실버푸들",
+    dogBirthdate: "2020-03-15",
+    dogDescription: "수원에서 가장 귀여운 실버푸들이에요. 산책할 때 꼬리를 살랑살랑 흔들고, 간식 봉지 소리만 들으면 번개처럼 달려와요!",
     dogImageUrl: heroMaltese,
-    ownerName: "Ji-eun",
-    ownerBio: "Just a regular person whose life was completely changed by a 3kg white fluffball. I started this café to document Coco's life and share the joy she brings me with others.",
+    ownerName: "박지수",
+    ownerBio: "별이와 함께하는 매일이 행복해요. 강아지 육아 일기를 공유하고 싶어서 이 팬카페를 만들었답니다. 별이를 사랑해주시는 모든 분들께 진심으로 감사드려요!",
     ownerImageUrl: "https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=400&h=400&fit=crop",
     socialLinks: {
       instagram: "https://instagram.com",
       youtube: "https://youtube.com",
-      blog: "https://blog.naver.com"
+      blog: null,
     }
   };
 
   const p = profile || defaultProfile;
 
-  let ageText = "Unknown";
+  let ageText = "알 수 없음";
   try {
-    ageText = formatDistanceToNowStrict(parseISO(p.dogBirthdate));
+    ageText = formatDistanceToNowStrict(parseISO(p.dogBirthdate), { locale: ko });
   } catch (e) {}
 
   return (
     <Layout>
       <div className="container mx-auto px-4 py-12 max-w-5xl">
         
-        {/* Dog Profile */}
+        {/* 강아지 프로필 */}
         <section className="mb-24">
           <div className="bg-card rounded-[3rem] p-8 md:p-12 shadow-xl border border-border/50 relative overflow-hidden">
             <div className="absolute top-0 right-0 w-64 h-64 bg-primary/10 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2"></div>
@@ -55,11 +55,11 @@ export default function OwnerPage() {
                 <div className="flex flex-wrap gap-4 pt-2">
                   <div className="flex items-center gap-2 bg-secondary/50 px-4 py-2 rounded-2xl">
                     <Bone className="w-5 h-5 text-amber-600" />
-                    <span className="font-medium text-foreground">{ageText} old</span>
+                    <span className="font-medium text-foreground">{ageText} 됐어요</span>
                   </div>
                   <div className="flex items-center gap-2 bg-secondary/50 px-4 py-2 rounded-2xl">
                     <MapPin className="w-5 h-5 text-blue-500" />
-                    <span className="font-medium text-foreground">Seoul, KR</span>
+                    <span className="font-medium text-foreground">Suwon, KR</span>
                   </div>
                 </div>
 
@@ -82,11 +82,11 @@ export default function OwnerPage() {
           </div>
         </section>
 
-        {/* Owner Profile */}
+        {/* 주인 프로필 */}
         <section className="mb-24">
           <div className="text-center mb-12">
-            <h2 className="text-3xl font-serif font-bold">Meet the Parent</h2>
-            <p className="text-muted-foreground mt-2">The human behind the camera</p>
+            <h2 className="text-3xl font-serif font-bold">주인 소개</h2>
+            <p className="text-muted-foreground mt-2">카메라 뒤에 있는 사람이에요</p>
           </div>
 
           <div className="max-w-3xl mx-auto flex flex-col md:flex-row items-center gap-10">
@@ -103,17 +103,17 @@ export default function OwnerPage() {
               <div className="flex flex-wrap justify-center md:justify-start gap-4">
                 {p.socialLinks?.instagram && (
                   <Button variant="outline" className="rounded-full gap-2 border-2 hover:bg-pink-50 hover:text-pink-600 hover:border-pink-200">
-                    <Instagram className="w-4 h-4" /> Instagram
+                    <Instagram className="w-4 h-4" /> 인스타그램
                   </Button>
                 )}
                 {p.socialLinks?.youtube && (
                   <Button variant="outline" className="rounded-full gap-2 border-2 hover:bg-red-50 hover:text-red-600 hover:border-red-200">
-                    <Youtube className="w-4 h-4" /> YouTube
+                    <Youtube className="w-4 h-4" /> 유튜브
                   </Button>
                 )}
                 {p.socialLinks?.blog && (
                   <Button variant="outline" className="rounded-full gap-2 border-2 hover:bg-green-50 hover:text-green-600 hover:border-green-200">
-                    <BookOpen className="w-4 h-4" /> Blog
+                    <BookOpen className="w-4 h-4" /> 블로그
                   </Button>
                 )}
               </div>

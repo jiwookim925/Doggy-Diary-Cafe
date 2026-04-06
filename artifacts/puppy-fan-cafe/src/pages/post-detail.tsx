@@ -8,6 +8,7 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Textarea } from "@/components/ui/textarea";
 import { Heart, MessageCircle, ArrowLeft, Trash2 } from "lucide-react";
 import { formatDistanceToNow, format } from "date-fns";
+import { ko } from "date-fns/locale";
 import { useState } from "react";
 import { useQueryClient } from "@tanstack/react-query";
 import { useLocation } from "wouter";
@@ -34,13 +35,12 @@ export default function PostDetailPage() {
   }
 
   if (!post) {
-    return <Layout><div className="text-center py-20">Post not found</div></Layout>;
+    return <Layout><div className="text-center py-20">게시물을 찾을 수 없어요.</div></Layout>;
   }
 
   const handleLike = () => {
     likePost.mutate({ id }, {
-      onSuccess: (result) => {
-        // Optimistic update would be better, but refetching is safer for simplicity
+      onSuccess: () => {
         queryClient.invalidateQueries({ queryKey: getGetPostQueryKey(id) });
       }
     });
@@ -63,7 +63,7 @@ export default function PostDetailPage() {
   };
 
   const handleDeletePost = () => {
-    if (confirm("Are you sure you want to delete this post?")) {
+    if (confirm("이 게시물을 삭제할까요?")) {
       deletePost.mutate({ id }, {
         onSuccess: () => {
           queryClient.invalidateQueries({ queryKey: getListPostsQueryKey() });
@@ -74,7 +74,7 @@ export default function PostDetailPage() {
   };
 
   const handleDeleteComment = (commentId: number) => {
-    if (confirm("Delete comment?")) {
+    if (confirm("댓글을 삭제할까요?")) {
       deleteCommentObj.mutate({ id: commentId }, {
         onSuccess: () => {
           queryClient.invalidateQueries({ queryKey: getListCommentsQueryKey(id) });
@@ -88,7 +88,7 @@ export default function PostDetailPage() {
     <Layout>
       <div className="container mx-auto px-4 py-8 max-w-3xl">
         <Link href="/community" className="inline-flex items-center gap-2 text-muted-foreground hover:text-primary mb-8 transition-colors">
-          <ArrowLeft className="w-4 h-4" /> Back to Board
+          <ArrowLeft className="w-4 h-4" /> 게시판으로 돌아가기
         </Link>
 
         <article className="bg-card rounded-[2.5rem] shadow-sm border border-border/50 overflow-hidden mb-12">
@@ -106,7 +106,7 @@ export default function PostDetailPage() {
                 </Avatar>
                 <div>
                   <div className="font-bold text-foreground text-lg">{post.authorName}</div>
-                  <div className="text-sm text-muted-foreground">{format(new Date(post.createdAt), "MMMM d, yyyy 'at' h:mm a")}</div>
+                  <div className="text-sm text-muted-foreground">{format(new Date(post.createdAt), "yyyy년 M월 d일 a h:mm", { locale: ko })}</div>
                 </div>
               </div>
               
@@ -142,28 +142,28 @@ export default function PostDetailPage() {
           </div>
         </article>
 
-        {/* Comments Section */}
+        {/* 댓글 섹션 */}
         <div className="space-y-8">
           <h3 className="text-2xl font-serif font-bold flex items-center gap-3">
-            Comments <span className="text-muted-foreground text-lg font-sans bg-muted px-3 py-1 rounded-full">{post.commentCount}</span>
+            댓글 <span className="text-muted-foreground text-lg font-sans bg-muted px-3 py-1 rounded-full">{post.commentCount}</span>
           </h3>
 
           <Show when="signed-in">
             <form onSubmit={handleComment} className="flex gap-4">
               <Avatar className="w-10 h-10 shrink-0">
                 <AvatarImage src={user?.imageUrl} />
-                <AvatarFallback>{user?.firstName?.[0] || 'U'}</AvatarFallback>
+                <AvatarFallback>{user?.firstName?.[0] || '나'}</AvatarFallback>
               </Avatar>
               <div className="flex-1 space-y-4">
                 <Textarea 
                   value={commentText}
                   onChange={e => setCommentText(e.target.value)}
-                  placeholder="Write a sweet comment..."
+                  placeholder="따뜻한 댓글을 남겨보세요..."
                   className="min-h-[100px] resize-none rounded-2xl p-4 bg-card border-border/50 focus-visible:ring-primary/30"
                 />
                 <div className="flex justify-end">
                   <Button type="submit" disabled={!commentText.trim() || createComment.isPending} className="rounded-full px-8">
-                    Post Comment
+                    {createComment.isPending ? "등록 중..." : "댓글 달기"}
                   </Button>
                 </div>
               </div>
@@ -172,9 +172,9 @@ export default function PostDetailPage() {
           
           <Show when="signed-out">
             <div className="bg-secondary/30 p-8 rounded-[2rem] text-center border border-border/50">
-              <p className="text-muted-foreground mb-4">Please sign in to leave a comment.</p>
+              <p className="text-muted-foreground mb-4">댓글을 남기려면 로그인이 필요해요.</p>
               <Link href="/sign-in">
-                <Button variant="outline" className="rounded-full border-2 bg-card">Sign In</Button>
+                <Button variant="outline" className="rounded-full border-2 bg-card">로그인하기</Button>
               </Link>
             </div>
           </Show>
@@ -187,7 +187,7 @@ export default function PostDetailPage() {
               </div>
             ) : comments?.length === 0 ? (
               <div className="text-center py-12 text-muted-foreground italic">
-                No comments yet. Be the first to say something nice!
+                아직 댓글이 없어요. 첫 번째 댓글을 남겨보세요!
               </div>
             ) : (
               comments?.map(comment => (
@@ -199,7 +199,7 @@ export default function PostDetailPage() {
                     <div className="flex justify-between items-start mb-2">
                       <div>
                         <span className="font-bold text-foreground mr-2">{comment.authorName}</span>
-                        <span className="text-xs text-muted-foreground">{formatDistanceToNow(new Date(comment.createdAt), { addSuffix: true })}</span>
+                        <span className="text-xs text-muted-foreground">{formatDistanceToNow(new Date(comment.createdAt), { addSuffix: true, locale: ko })}</span>
                       </div>
                       {user && user.id === comment.authorId && (
                         <button 

@@ -7,6 +7,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Heart, MessageCircle, PenLine, Image as ImageIcon } from "lucide-react";
 import { formatDistanceToNow } from "date-fns";
+import { ko } from "date-fns/locale";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { useState } from "react";
 import { Input } from "@/components/ui/input";
@@ -22,10 +23,10 @@ export default function CommunityPage() {
     <Layout>
       <div className="bg-secondary/30 py-12 border-b border-border">
         <div className="container mx-auto px-4 max-w-4xl text-center">
-          <h1 className="text-4xl md:text-5xl font-serif font-bold mb-4">Café Board</h1>
+          <h1 className="text-4xl md:text-5xl font-serif font-bold mb-4">커뮤니티 게시판</h1>
           <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-            Share your favorite Coco moments, fan art, or just say hello to other fans. 
-            This is our cozy space.
+            별이와의 소중한 순간, 팬아트, 또는 다른 팬들에게 인사를 건네보세요.
+            여기는 우리만의 포근한 공간이에요.
           </p>
           
           <Show when="signed-in">
@@ -48,10 +49,10 @@ export default function CommunityPage() {
             <div className="w-20 h-20 mx-auto bg-primary/10 rounded-full flex items-center justify-center text-primary mb-4">
               <PenLine className="w-10 h-10" />
             </div>
-            <h3 className="text-2xl font-serif font-bold mb-2">It's quiet here...</h3>
-            <p className="text-muted-foreground mb-6">Be the first to share something about Coco!</p>
+            <h3 className="text-2xl font-serif font-bold mb-2">아직 조용하네요...</h3>
+            <p className="text-muted-foreground mb-6">별이에 대한 첫 이야기를 들려주세요!</p>
             <Show when="signed-in">
-              <Button onClick={() => setIsOpen(true)} className="rounded-full">Write a Post</Button>
+              <Button onClick={() => setIsOpen(true)} className="rounded-full">글 작성하기</Button>
             </Show>
           </div>
         ) : (
@@ -64,7 +65,7 @@ export default function CommunityPage() {
                       <div className="sm:w-1/3 aspect-video sm:aspect-auto relative overflow-hidden bg-muted">
                         <img 
                           src={post.imageUrl} 
-                          alt="Post attachment" 
+                          alt="게시물 이미지" 
                           className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" 
                         />
                       </div>
@@ -77,8 +78,8 @@ export default function CommunityPage() {
                           </Avatar>
                           <div className="text-sm">
                             <span className="font-medium text-foreground">{post.authorName}</span>
-                            <span className="text-muted-foreground mx-2">•</span>
-                            <span className="text-muted-foreground">{formatDistanceToNow(new Date(post.createdAt), { addSuffix: true })}</span>
+                            <span className="text-muted-foreground mx-2">·</span>
+                            <span className="text-muted-foreground">{formatDistanceToNow(new Date(post.createdAt), { addSuffix: true, locale: ko })}</span>
                           </div>
                         </div>
                         <h3 className="text-xl font-bold mb-3 group-hover:text-primary transition-colors">{post.title}</h3>
@@ -142,18 +143,18 @@ function CreatePostDialog({ open, onOpenChange }: { open: boolean, onOpenChange:
       <DialogTrigger asChild>
         <Button size="lg" className="rounded-full shadow-lg h-14 px-8 text-lg hover:-translate-y-1 transition-transform">
           <PenLine className="w-5 h-5 mr-2" />
-          Share a Story
+          이야기 공유하기
         </Button>
       </DialogTrigger>
       <DialogContent className="sm:max-w-[500px] rounded-[2rem] p-8">
         <DialogHeader className="mb-6">
-          <DialogTitle className="text-2xl font-serif">Write something nice</DialogTitle>
+          <DialogTitle className="text-2xl font-serif">별이 이야기 쓰기</DialogTitle>
         </DialogHeader>
         
         <form onSubmit={handleSubmit} className="space-y-6">
           <div className="space-y-2">
             <Input 
-              placeholder="Give your post a title..." 
+              placeholder="제목을 입력하세요..." 
               value={title}
               onChange={e => setTitle(e.target.value)}
               className="text-lg font-medium border-0 border-b-2 border-border rounded-none px-0 focus-visible:ring-0 focus-visible:border-primary bg-transparent"
@@ -162,7 +163,7 @@ function CreatePostDialog({ open, onOpenChange }: { open: boolean, onOpenChange:
           
           <div className="space-y-2">
             <Textarea 
-              placeholder="What's on your mind? Did you see Coco today?" 
+              placeholder="별이에 대한 이야기를 들려주세요..." 
               value={content}
               onChange={e => setContent(e.target.value)}
               className="min-h-[150px] resize-none border-border rounded-2xl p-4 focus-visible:ring-primary/20 bg-muted/30"
@@ -173,7 +174,7 @@ function CreatePostDialog({ open, onOpenChange }: { open: boolean, onOpenChange:
             <div className="flex items-center gap-3 px-4 py-3 bg-muted/50 rounded-2xl border border-border/50">
               <ImageIcon className="w-5 h-5 text-muted-foreground shrink-0" />
               <Input 
-                placeholder="Image URL (optional)" 
+                placeholder="이미지 URL (선택사항)" 
                 value={imageUrl}
                 onChange={e => setImageUrl(e.target.value)}
                 className="border-0 bg-transparent h-auto p-0 focus-visible:ring-0"
@@ -181,7 +182,7 @@ function CreatePostDialog({ open, onOpenChange }: { open: boolean, onOpenChange:
             </div>
             {imageUrl && (
               <div className="mt-4 rounded-xl overflow-hidden max-h-[200px] border border-border">
-                <img src={imageUrl} alt="Preview" className="w-full h-full object-cover" onError={(e) => (e.currentTarget.style.display = 'none')} />
+                <img src={imageUrl} alt="미리보기" className="w-full h-full object-cover" onError={(e) => (e.currentTarget.style.display = 'none')} />
               </div>
             )}
           </div>
@@ -191,7 +192,7 @@ function CreatePostDialog({ open, onOpenChange }: { open: boolean, onOpenChange:
             className="w-full rounded-full h-12 text-lg"
             disabled={!title.trim() || !content.trim() || createPost.isPending}
           >
-            {createPost.isPending ? "Posting..." : "Post to Board"}
+            {createPost.isPending ? "게시 중..." : "게시판에 올리기"}
           </Button>
         </form>
       </DialogContent>

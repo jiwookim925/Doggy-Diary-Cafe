@@ -8,13 +8,12 @@ import { useListPosts } from "@workspace/api-client-react";
 import { Link } from "wouter";
 import { Card, CardContent } from "@/components/ui/card";
 import { formatDistanceToNow } from "date-fns";
+import { ko } from "date-fns/locale";
 
 export default function ProfilePage() {
   const { user, isLoaded } = useUser();
   const { signOut } = useClerk();
   
-  // In a real app, we'd pass a filter to get only this user's posts
-  // For now, we'll fetch all and filter client side
   const { data, isLoading } = useListPosts({ page: 1, limit: 100 });
 
   if (!isLoaded) {
@@ -35,20 +34,20 @@ export default function ProfilePage() {
             <div className="absolute -top-16 left-1/2 transform -translate-x-1/2">
               <Avatar className="w-32 h-32 border-8 border-card shadow-lg bg-muted">
                 <AvatarImage src={user.imageUrl} />
-                <AvatarFallback className="text-4xl">{user.firstName?.[0] || 'U'}</AvatarFallback>
+                <AvatarFallback className="text-4xl">{user.firstName?.[0] || '나'}</AvatarFallback>
               </Avatar>
             </div>
             
             <div className="mt-16 text-center">
-              <h1 className="text-3xl font-bold font-serif mb-1">{user.fullName || "Café Member"}</h1>
+              <h1 className="text-3xl font-bold font-serif mb-1">{user.fullName || "카페 멤버"}</h1>
               <p className="text-muted-foreground mb-8">{user.primaryEmailAddress?.emailAddress}</p>
               
               <div className="flex justify-center gap-4">
                 <Button variant="outline" className="rounded-full border-2 gap-2">
-                  <Settings className="w-4 h-4" /> Edit Profile
+                  <Settings className="w-4 h-4" /> 프로필 수정
                 </Button>
                 <Button variant="outline" className="rounded-full border-2 text-destructive hover:bg-destructive/10 hover:text-destructive gap-2" onClick={() => signOut()}>
-                  <LogOut className="w-4 h-4" /> Sign Out
+                  <LogOut className="w-4 h-4" /> 로그아웃
                 </Button>
               </div>
             </div>
@@ -56,26 +55,26 @@ export default function ProfilePage() {
             <div className="grid grid-cols-3 gap-4 border-t border-border/50 mt-10 pt-10 text-center">
               <div>
                 <div className="text-3xl font-bold text-foreground mb-1">{userPosts.length}</div>
-                <div className="text-sm text-muted-foreground uppercase tracking-wider font-medium">Stories</div>
+                <div className="text-sm text-muted-foreground uppercase tracking-wider font-medium">게시물</div>
               </div>
               <div>
                 <div className="text-3xl font-bold text-foreground mb-1">
                   {userPosts.reduce((sum, p) => sum + p.likeCount, 0)}
                 </div>
-                <div className="text-sm text-muted-foreground uppercase tracking-wider font-medium">Likes Received</div>
+                <div className="text-sm text-muted-foreground uppercase tracking-wider font-medium">받은 좋아요</div>
               </div>
               <div>
                 <div className="text-3xl font-bold text-foreground mb-1">
-                  {formatDistanceToNow(user.createdAt || new Date(), { addSuffix: false })}
+                  {formatDistanceToNow(user.createdAt || new Date(), { addSuffix: false, locale: ko })}
                 </div>
-                <div className="text-sm text-muted-foreground uppercase tracking-wider font-medium">Member Since</div>
+                <div className="text-sm text-muted-foreground uppercase tracking-wider font-medium">가입 후</div>
               </div>
             </div>
           </div>
 
           <div className="mt-16">
             <h2 className="text-2xl font-serif font-bold mb-8 flex items-center gap-3">
-              <Clock className="w-6 h-6 text-primary" /> Your Recent Stories
+              <Clock className="w-6 h-6 text-primary" /> 내가 쓴 이야기
             </h2>
 
             {isLoading ? (
@@ -85,9 +84,9 @@ export default function ProfilePage() {
               </div>
             ) : userPosts.length === 0 ? (
               <div className="text-center py-16 bg-card rounded-[2rem] border border-dashed border-border">
-                <p className="text-muted-foreground mb-4">You haven't shared any stories yet.</p>
+                <p className="text-muted-foreground mb-4">아직 작성한 이야기가 없어요.</p>
                 <Link href="/community">
-                  <Button className="rounded-full">Go to Board</Button>
+                  <Button className="rounded-full">게시판으로 가기</Button>
                 </Link>
               </div>
             ) : (
@@ -99,7 +98,7 @@ export default function ProfilePage() {
                         <div className="flex justify-between items-start mb-2">
                           <h3 className="font-bold text-lg">{post.title}</h3>
                           <span className="text-xs text-muted-foreground">
-                            {formatDistanceToNow(new Date(post.createdAt), { addSuffix: true })}
+                            {formatDistanceToNow(new Date(post.createdAt), { addSuffix: true, locale: ko })}
                           </span>
                         </div>
                         <p className="text-muted-foreground text-sm line-clamp-1 mb-4">{post.content}</p>
