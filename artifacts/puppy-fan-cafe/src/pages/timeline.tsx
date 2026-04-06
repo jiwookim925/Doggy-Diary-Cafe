@@ -69,7 +69,7 @@ export default function TimelinePage() {
                         {event.mediaUrl && event.mediaType !== 'none' && (
                           <div className="mt-4 rounded-[1.5rem] overflow-hidden bg-muted aspect-video relative group-hover:shadow-lg transition-shadow">
                             {event.mediaType === 'image' ? (
-                              <img src={event.mediaUrl} alt={event.title} className="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-700" />
+                              <img src={event.mediaUrl.startsWith('http') ? event.mediaUrl : `${import.meta.env.BASE_URL}${event.mediaUrl.replace(/^\//, '')}`} alt={event.title} className="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-700" />
                             ) : (
                               <div className="w-full h-full flex items-center justify-center bg-secondary/50">
                                 <Video className="w-12 h-12 text-muted-foreground/30" />
