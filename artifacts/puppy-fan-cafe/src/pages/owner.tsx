@@ -91,7 +91,7 @@ export default function OwnerPage() {
 
           <div className="max-w-3xl mx-auto flex flex-col md:flex-row items-center gap-10">
             <div className="w-48 h-48 rounded-full overflow-hidden border-4 border-secondary shadow-lg shrink-0">
-              <img src={p.ownerImageUrl || defaultProfile.ownerImageUrl} alt={p.ownerName} className="w-full h-full object-cover grayscale hover:grayscale-0 transition-all duration-500" />
+              <img src={p.ownerImageUrl ? (p.ownerImageUrl.startsWith('http') ? p.ownerImageUrl : `${import.meta.env.BASE_URL}${p.ownerImageUrl.replace(/^\//, '')}`) : defaultProfile.ownerImageUrl} alt={p.ownerName} className="w-full h-full object-cover grayscale hover:grayscale-0 transition-all duration-500" />
             </div>
             
             <div className="text-center md:text-left">
