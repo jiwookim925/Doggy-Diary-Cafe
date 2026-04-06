@@ -1,8 +1,7 @@
 import { Link, useLocation } from "wouter";
 import { Show, useUser, useClerk } from "@clerk/react";
-import { Heart, Coffee, Clock, User as UserIcon, LogOut, Menu } from "lucide-react";
+import { Heart, Coffee, Clock, User as UserIcon, LogOut } from "lucide-react";
 import { Button } from "./ui/button";
-import { Sheet, SheetContent, SheetTrigger } from "./ui/sheet";
 import { Avatar, AvatarImage, AvatarFallback } from "./ui/avatar";
 
 export function Layout({ children }: { children: React.ReactNode }) {
@@ -25,12 +24,12 @@ export function Layout({ children }: { children: React.ReactNode }) {
             <span>별이 팬카페</span>
           </Link>
 
-          <nav className="hidden md:flex items-center gap-8">
+          <nav className="flex items-center gap-6">
             {navLinks.map((link) => (
               <Link
                 key={link.href}
                 href={link.href}
-                className={`flex items-center gap-2 text-sm font-medium transition-colors hover:text-primary ${
+                className={`flex items-center gap-1.5 text-sm font-medium transition-colors hover:text-primary ${
                   location.startsWith(link.href) ? "text-primary" : "text-muted-foreground"
                 }`}
               >
@@ -40,9 +39,9 @@ export function Layout({ children }: { children: React.ReactNode }) {
             ))}
           </nav>
 
-          <div className="flex items-center gap-4">
+          <div className="flex items-center gap-3">
             <Show when="signed-out">
-              <Link href="/sign-in" className="hidden md:block">
+              <Link href="/sign-in">
                 <Button variant="ghost" className="rounded-full">로그인</Button>
               </Link>
               <Link href="/sign-up">
@@ -51,7 +50,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
             </Show>
 
             <Show when="signed-in">
-              <div className="hidden md:flex items-center gap-4">
+              <div className="flex items-center gap-3">
                 <Link href="/profile">
                   <Avatar className="w-9 h-9 border-2 border-primary/20 cursor-pointer hover:border-primary transition-colors">
                     <AvatarImage src={user?.imageUrl} />
@@ -63,46 +62,6 @@ export function Layout({ children }: { children: React.ReactNode }) {
                 </Button>
               </div>
             </Show>
-
-            <Sheet>
-              <SheetTrigger asChild>
-                <Button variant="ghost" size="icon" className="md:hidden">
-                  <Menu className="w-6 h-6" />
-                </Button>
-              </SheetTrigger>
-              <SheetContent side="right" className="w-[80vw] sm:w-[350px] bg-background/95 backdrop-blur-xl">
-                <div className="flex flex-col gap-8 mt-8">
-                  {navLinks.map((link) => (
-                    <Link
-                      key={link.href}
-                      href={link.href}
-                      className="flex items-center gap-4 text-lg font-medium text-foreground hover:text-primary transition-colors"
-                    >
-                      <link.icon className="w-5 h-5" />
-                      {link.label}
-                    </Link>
-                  ))}
-                  
-                  <Show when="signed-in">
-                    <div className="h-px bg-border my-4" />
-                    <Link href="/profile" className="flex items-center gap-4 text-lg font-medium text-foreground hover:text-primary transition-colors">
-                      <UserIcon className="w-5 h-5" />
-                      내 프로필
-                    </Link>
-                    <button onClick={() => signOut()} className="flex items-center gap-4 text-lg font-medium text-destructive transition-colors text-left">
-                      <LogOut className="w-5 h-5" />
-                      로그아웃
-                    </button>
-                  </Show>
-                  
-                  <Show when="signed-out">
-                    <div className="h-px bg-border my-4" />
-                    <Link href="/sign-in" className="text-lg font-medium">로그인</Link>
-                    <Link href="/sign-up" className="text-lg font-medium text-primary">카페 가입</Link>
-                  </Show>
-                </div>
-              </SheetContent>
-            </Sheet>
           </div>
         </div>
       </header>
